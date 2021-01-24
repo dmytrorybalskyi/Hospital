@@ -1,0 +1,13 @@
+D:\java\hospital\src\main\java\org\example\hospital\config\WebSecurityConfig.java
+D:\java\hospital\src\main\java\org\example\hospital\controllers\RegistrationController.java
+D:\java\hospital\src\main\java\org\example\hospital\entity\Patient.java
+D:\java\hospital\src\main\java\org\example\hospital\controllers\MainController.java
+D:\java\hospital\src\main\java\org\example\hospital\accessingdatamysql\AccountRepository.java
+D:\java\hospital\src\main\java\org\example\hospital\service\AccountDetailsService.java
+D:\java\hospital\src\main\java\org\example\hospital\config\AppConfig.java
+D:\java\hospital\src\main\java\org\example\hospital\entity\Account.java
+D:\java\hospital\src\main\java\org\example\hospital\entity\Role.java
+D:\java\hospital\src\main\java\org\example\hospital\service\AccountService.java
+D:\java\hospital\src\main\java\org\example\hospital\Application.java
+D:\java\hospital\src\main\java\org\example\hospital\config\MVCConfig.java
+D:\java\hospital\src\main\java\org\example\hospital\accessingdatamysql\PatientRepository.java
