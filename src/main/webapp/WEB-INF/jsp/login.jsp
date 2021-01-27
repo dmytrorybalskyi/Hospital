@@ -1,4 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page session="false"%>
 <html>
@@ -42,12 +43,16 @@
 </span>
 
 
-
 <form action="/login" method="POST">
-    <div><label> <spring:message code="label.login" /> <input type="text" name="username"/> </label></div>
+    <div><label> <spring:message code="label.login" /> <input type="text" name="login"/> </label></div>
     <div><label> <spring:message code="label.password" />  <input type="password" name="password"/> </label></div>
     <button type="submit"><spring:message code="label.signIn" /></button>
-    <p><a href="/registration"><spring:message code="label.registerNewAccount" /></p>
+    <p><a href="/registration"><spring:message code="label.registerNewAccount" /></a></p>
+
+        <c:if test="${param.error ne null}">
+            <p><spring:message code="label.wrongLogin" /></p>
+        </c:if>
+
 </form>
 </body>
 </html>

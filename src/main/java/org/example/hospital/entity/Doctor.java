@@ -1,6 +1,9 @@
 package org.example.hospital.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Doctor {
     @Id
@@ -15,6 +18,15 @@ public class Doctor {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctor",fetch = FetchType.EAGER)
+    private List<Patient> patients = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctor",fetch = FetchType.LAZY)
+    private List<Procedures> procedures = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctor",fetch = FetchType.LAZY)
+    private List<Treatment> treatments = new ArrayList<>();
 
     private int patientsNumber;
 

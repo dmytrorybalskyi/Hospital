@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -32,20 +34,19 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration",method = RequestMethod.POST)
-    public String addAccount(Model model,
-                             @RequestParam String login,
-                             @RequestParam String password,
-                             @RequestParam String name,
-                             @RequestParam int age){
-        Account accountFromDB = accountRepository.findByLogin(login);
+    public String addAccount(Account account,
+                             Patient patient,
+                             Model model){
+        Account accountFromDB = accountRepository.findByLogin(account.getLogin());
         if(accountFromDB != null){
             model.addAttribute("message","User already exist");
             return "registration";
         }
-        Account account = new Account(login,password);
         account.setRole(new Role(2));
         accountService.addAccount(account);
-        Patient patient = new Patient(name,age);
+        Account account1 = new Account("admin","admin");
+        account1.setRole(new Role(1));
+        accountService.addAccount(account1);
         patient.setAccount(account);
         patientRepository.save(patient);
 

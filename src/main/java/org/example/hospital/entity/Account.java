@@ -2,7 +2,7 @@ package org.example.hospital.entity;
 
 
 import javax.persistence.*;
-import javax.print.Doc;
+
 
 @Entity
 public class Account {

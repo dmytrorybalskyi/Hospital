@@ -3,21 +3,20 @@ package org.example.hospital.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
-public class Category {
+public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category",fetch = FetchType.LAZY)
-    private List<Doctor> doctors = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type",fetch = FetchType.EAGER)
+    private List<Procedures> procedures = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category",fetch = FetchType.LAZY)
-    private List<Treatment> treatments = new ArrayList<>();
-
-    public Category(){}
+    public Type(){}
 
     public Integer getId() {
         return id;
@@ -35,11 +34,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<Doctor> getDoctors() {
-        return doctors;
+    public List<Procedures> getProcedures() {
+        return procedures;
     }
 
-    public void setDoctors(List<Doctor> doctors) {
-        this.doctors = doctors;
+    public void setProcedures(List<Procedures> procedures) {
+        this.procedures = procedures;
     }
 }
