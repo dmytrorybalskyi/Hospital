@@ -13,11 +13,11 @@ public class Treatment {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_account_id")
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_account_id")
     private Patient patient;
 
     @ManyToOne
@@ -30,14 +30,13 @@ public class Treatment {
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "treatment",fetch = FetchType.LAZY)
-    private List<Procedures> procedures = new ArrayList<>();
+    private List<Procedures> proceduresList = new ArrayList<>();
 
     private String diagnosis;
 
     public Treatment(){}
 
-    public Treatment(Patient patient, Category category){
-        this.patient = patient;
+    public Treatment(Category category){
         this.category = category;
     }
 
@@ -88,4 +87,13 @@ public class Treatment {
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
     }
+
+    public List<Procedures> getProceduresList() {
+        return proceduresList;
+    }
+
+    public void setProceduresList(List<Procedures> proceduresList) {
+        this.proceduresList = proceduresList;
+    }
 }
+

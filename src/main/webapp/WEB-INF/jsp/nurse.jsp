@@ -18,21 +18,8 @@
 </span>
 
 <form action="/logout" method="POST">
-   <button type="submit"><spring:message code="label.signOut" /></button>
+     <button type="submit"><spring:message code="label.signOut" /></button>
 </form>
-
-<form action="/appointment" method="POST">
-   <select class="selectpicker form-control form-select-button" name="category" required>
-            <c:forEach items="${categories}" var="category">
-                <option value="${category.id}">${category.name}</option>
-            </c:forEach>
-        </select>
-        <button type="submit"><spring:message code="label.appointment"/></button>
-              <c:if test="${appointment==true}">
-                    <p><spring:message code="label.appointmentExist" /></p>
-              </c:if>
-</form>
-
          <table class="table">
               <thead>
               <tr>
@@ -48,7 +35,9 @@
                       <td>${procedures.procedureName}</td>
                       <td>${procedures.type.name}</td>
                       <td>${procedures.status.name}</td>
-                      </tr>
+                      <input type="hidden" name="procedures_id" value=${procedures.id}>
+                      <td><button type="submit">execute</a></button></td>
+                       </tr>
                       </form>
                        </c:forEach>
           </table>

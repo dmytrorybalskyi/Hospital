@@ -1,23 +1,23 @@
 package org.example.hospital.controllers;
 
-import org.example.hospital.accessingdatamysql.AccountRepository;
-import org.example.hospital.accessingdatamysql.CategoryRepository;
-import org.example.hospital.accessingdatamysql.DoctorRepository;
-import org.example.hospital.entity.Account;
-import org.example.hospital.entity.Category;
-import org.example.hospital.entity.Doctor;
-import org.example.hospital.entity.Role;
+import org.example.hospital.DTO.DoctorDTO;
+import org.example.hospital.entity.*;
 import org.example.hospital.service.AccountService;
+import org.example.hospital.service.CategoryService;
+import org.example.hospital.service.DoctorService;
+import org.example.hospital.service.TreatmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
+
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 public class AdminController {
@@ -26,42 +26,60 @@ public class AdminController {
     private AccountService accountService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private CategoryService categoryService;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private DoctorService doctorService;
 
     @Autowired
-    private DoctorRepository doctorRepository;
+    private TreatmentService treatmentService;
 
-    @RequestMapping(value = "/admin",method = RequestMethod.GET)
-    public String admin(Map<String, Object> model){
-        Account account = accountRepository.findByLogin(MainController.getCurrentUser().getUsername());
-        model.put("login",account.getLogin());
-        return "admin";
-    }
-
-    @RequestMapping(value = "/addDoctor",method = RequestMethod.GET)
-    public String addDoctor(Map<String, Object> model){
-        List<Category> categories = categoryRepository.findAll();
-        model.put("categories",categories);
+    @GetMapping("/addDoctor")
+    public String addDoctor(Model model) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
         return "addDoctor";
     }
 
-    @RequestMapping(value = "/addDoctor",method = RequestMethod.POST)
-    public String addDoctor(Map<String, Object> model,
-                            @RequestParam String login,
-                            @RequestParam String name,
-                            @RequestParam String password,
-                            @RequestParam Category category){
-        Account account = new Account(login,password);
-        account.setRole(new Role(3));
-        accountService.addAccount(account);
-        Doctor doctor = new Doctor(name);
-        doctor.setCategory(category);
-        doctor.setAccount(account);
-        doctorRepository.save(doctor);
-        return "admin";
+    @PostMapping("/addDoctor")
+    public String addDoctor(@Valid DoctorDTO doctorDTO,
+                            BindingResult bindingResultDoctorDTO,
+                            Model model) {
+        if (bindingResultDoctorDTO.hasErrors()) {
+            bindingResultDoctorDTO.getFieldErrors().stream().forEach(FieldError -> model
+                    .addAttribute(FieldError.getField() + FieldError.getCode(), true));
+            return addDoctor(model);
+        }
+
+        try{
+            doctorService.addDoctor(doctorDTO);
+        }catch (IllegalArgumentException e) {
+            model.addAttribute("message", true);
+            return addDoctor(model);
+        }
+
+        return "redirect:/admin";
     }
 
+    @GetMapping("/treatment/{id}")
+    public String setDoctor(@PathVariable(value = "id") int id,
+                            Model model) {
+        Treatment treatment = treatmentService.findById(id).get();
+        model.addAttribute("treatment", treatment);
+        model.addAttribute("doctors", doctorService.getAllDoctorsByCategory(treatment.getCategory()));
+        return "treatment";
+    }
+
+
+    @PostMapping("/setDoctor/{treatment.id}")
+    public String setDoctor(@PathVariable(value = "treatment.id") int id,
+                            Doctor doctor,
+                            Model model) {
+        try{
+            treatmentService.setDoctor(doctor.getAccount().getId(),id);
+        }catch (IllegalArgumentException e){
+            model.addAttribute("doctor","doctor already set");
+        }
+        return "admin";
+    }
 }

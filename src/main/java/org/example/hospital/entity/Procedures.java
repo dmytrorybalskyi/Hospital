@@ -10,8 +10,11 @@ public class Procedures {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "name")
+    private String procedureName;
+
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_account_id")
     private Doctor doctor;
 
     @ManyToOne
@@ -27,6 +30,10 @@ public class Procedures {
     private Type type;
 
     public Procedures(){}
+
+    public Procedures(String procedureName){
+        this.procedureName = procedureName;
+    }
 
     public Integer getId() {
         return id;
@@ -66,5 +73,13 @@ public class Procedures {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public String getProcedureName() {
+        return procedureName;
+    }
+
+    public void setProcedureName(String procedureName) {
+        this.procedureName = procedureName;
     }
 }

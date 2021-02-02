@@ -22,6 +22,10 @@ public class Status {
 
     public Status(){}
 
+    public Status(int id){
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -37,13 +37,36 @@
     |
     <a href="?lang=ru">ru</a>
 </span>
-<form action="/registration" method="POST">
+<form action="/registration" method="POST" commandName="patient">
     <spring:message code="label.login" />:<br/><input type="text" name="login"><br/>
+       <c:if test="${loginNotBlank==true}">
+            <p><spring:message code="label.loginBlank" /></p>
+       </c:if>
+       <c:if test="${loginLength==true}">
+            <p><spring:message code="label.loginTooLong" /></p>
+       </c:if>
     <spring:message code="label.password" />:<br/><input type="password" name="password"><br/>
+       <c:if test="${passwordNotBlank==true}">
+            <p><spring:message code="label.passwordBlank" /></p>
+       </c:if>
     <spring:message code="label.name" />:<br/><input type="text" name="name"><br/>
-    <spring:message code="label.age" />:<br/><input type="number" name="age"><br/>
+       <c:if test="${nameNotBlank==true}">
+             <p><spring:message code="label.nameBlank" /></p>
+       </c:if>
+       <c:if test="${nameLength==true}">
+             <p><spring:message code="label.nameTooLong" /></p>
+       </c:if>
+    <spring:message code="label.age" />:<br/><input required type="number" name="age"><br/>
+       <c:if test="${ageMax==true}">
+             <p><spring:message code="label.ageMax" /></p>
+       </c:if>
+       <c:if test="${ageMin==true}">
+             <p><spring:message code="label.ageMin" /></p>
+       </c:if>
     <button type="submit"><spring:message code="label.register" /></button>
-    <p>${message}</p>
+       <c:if test="${message==true}">
+             <p><spring:message code="label.userExists" /></p>
+       </c:if>
 </form>
 </body>
 </html>

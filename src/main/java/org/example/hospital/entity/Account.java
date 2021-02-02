@@ -1,7 +1,12 @@
 package org.example.hospital.entity;
 
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
 @Entity
@@ -11,8 +16,11 @@ public class Account {
     @Column(name = "id")
     private Integer id;
 
+    @NotBlank(message = "Login cannot be empty")
+    @Length(max = 20, message = "Login too long")
     private String login;
 
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 
     @ManyToOne
@@ -70,5 +78,13 @@ public class Account {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 }

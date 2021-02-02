@@ -1,18 +1,22 @@
 package org.example.hospital.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Doctor {
     @Id
-    @Column(name = "id")
+    @Column(name = "account_id")
     private Integer id;
     @OneToOne
     @MapsId
     private Account account;
 
+    @NotBlank(message = "Name cannot be empty")
+    @Size(max = 20,message = "Name too long")
     private String name;
 
     @ManyToOne
@@ -74,5 +78,29 @@ public class Doctor {
 
     public void setPatientsNumber(int patientsNumber) {
         this.patientsNumber = patientsNumber;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
+    }
+
+    public List<Procedures> getProcedures() {
+        return procedures;
+    }
+
+    public void setProcedures(List<Procedures> procedures) {
+        this.procedures = procedures;
+    }
+
+    public List<Treatment> getTreatments() {
+        return treatments;
+    }
+
+    public void setTreatments(List<Treatment> treatments) {
+        this.treatments = treatments;
     }
 }

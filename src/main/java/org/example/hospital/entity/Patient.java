@@ -1,19 +1,25 @@
 package org.example.hospital.entity;
 
+import com.sun.istack.internal.NotNull;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Patient {
     @Id
-    @Column(name = "id")
+    @Column(name = "account_id")
     private Integer id;
 
     @OneToOne
     @MapsId
     private Account account;
 
+    @NotBlank(message = "Name cannot be empty")
+    @Length(max = 20, message = "Name too long")
     private String name;
 
     @ManyToOne
@@ -23,7 +29,10 @@ public class Patient {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient",fetch = FetchType.LAZY)
     private List<Treatment> treatments = new ArrayList<>();
 
-    private int age;
+    @NotNull
+    @Min(value = 0,message = "more than 0")
+    @Max(value = 130,message = "las than 130")
+    private Integer age;
 
     public Patient(){}
 
