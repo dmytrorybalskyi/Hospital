@@ -36,13 +36,10 @@ public class DoctorService {
             throw new IllegalArgumentException("user already exist");
         }
         Account account = new Account(doctorDTO.getLogin(), doctorDTO.getPassword());
-        Doctor doctor = new Doctor(doctorDTO.getName());
-        doctor.setCategory(doctorDTO.getCategory());
+        Doctor doctor = new Doctor.Builder(doctorDTO.getName()).setCategory(doctorDTO.getCategory()).setAccount(account).build();
         account.setRole(new Role(3));
-        if(doctor.getCategory().getName().equals("nurse")){
+        if(doctor.getCategory().getName().equals("nurse"))
             account.setRole(new Role(4));
-        }
-        doctor.setAccount(account);
         accountService.addAccount(account);
         doctorRepository.save(doctor);
         return true;

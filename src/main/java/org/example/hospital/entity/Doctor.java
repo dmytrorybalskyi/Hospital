@@ -36,6 +36,76 @@ public class Doctor {
 
     public Doctor(){}
 
+    private Doctor(Builder builder){
+        this.id = builder.id;
+        this.account = builder.account;
+        this.name = builder.name;
+        this.category = builder.category;
+        this.patients = builder.patients;
+        this.procedures = builder.procedures;
+        this.treatments = builder.treatments;
+        this.patientsNumber = builder.patientsNumber;
+    }
+
+    public static class Builder{
+        private Integer id;
+        private Account account;
+        private String name;
+        private Category category;
+        private List<Patient> patients = new ArrayList<>();
+        private List<Procedures> procedures = new ArrayList<>();
+        private List<Treatment> treatments = new ArrayList<>();
+        private int patientsNumber;
+
+        public Builder(String name){
+            this.name = name;
+        }
+
+        public Doctor build(){
+            return new Doctor(this);
+        }
+
+        public Builder setId(Integer id) {
+            this.id = id;
+            return  this;
+        }
+
+        public Builder setAccount(Account account) {
+            this.account = account;
+            return  this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return  this;
+        }
+
+        public Builder setCategory(Category category) {
+            this.category = category;
+            return  this;
+        }
+
+        public Builder setPatients(List<Patient> patients) {
+            this.patients = patients;
+            return  this;
+        }
+
+        public Builder setProcedures(List<Procedures> procedures) {
+            this.procedures = procedures;
+            return  this;
+        }
+
+        public Builder setTreatments(List<Treatment> treatments) {
+            this.treatments = treatments;
+            return  this;
+        }
+
+        public Builder setPatientsNumber(int patientsNumber) {
+            this.patientsNumber = patientsNumber;
+            return  this;
+        }
+    }
+
     public Doctor(String name){
         this.name = name;
     }
@@ -82,10 +152,6 @@ public class Doctor {
 
     public List<Patient> getPatients() {
         return patients;
-    }
-
-    public void setPatients(List<Patient> patients) {
-        this.patients = patients;
     }
 
     public List<Procedures> getProcedures() {

@@ -5,6 +5,8 @@ import org.example.hospital.accessingdatamysql.PatientRepository;
 import org.example.hospital.accessingdatamysql.TreatmentRepository;
 import org.example.hospital.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,17 +35,17 @@ public class TreatmentService {
     }
 
     public List<Treatment> findAll() {
-        return treatmentRepository.findAll();
+        return (List<Treatment>) treatmentRepository.findAll();
     }
 
     public Optional<Treatment> findById(int id) {
         return treatmentRepository.findById(id);
     }
 
-    public List<Treatment> findByStatus(Status status) {
-        return treatmentRepository.findByStatus(status);
+    public Page<Treatment> findByStatus(Status status, Pageable pageable) {
+        return treatmentRepository.findByStatus(status,pageable);
     }
-
+    @Transactional
     public List<Treatment> findByStatusAndDoctor(Status status,Doctor doctor) {
         return treatmentRepository.findByStatusAndDoctor(status,doctor);
     }
@@ -75,7 +77,7 @@ public class TreatmentService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
     public boolean addTreatment(Category category)throws IllegalArgumentException {
         Account account = accountService.getCurrentAccount();
-        if (!treatmentRepository.findByPatientAndStatus(account.getPatient().getId(),1,2).isEmpty()){
+        if (!treatmentRepository.findByPatientAndStatus(account.getId(),1,2).isEmpty()){
             throw new IllegalArgumentException("you're already attempt");
         }
         Treatment treatment = new Treatment(category);

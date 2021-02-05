@@ -3,6 +3,8 @@ package org.example.hospital.controllers;
 import org.example.hospital.DTO.PatientDTO;
 import org.example.hospital.service.AccountService;
 import org.example.hospital.service.PatientService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import java.sql.SQLException;
 
 @Controller
 public class RegistrationController {
+
+    private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     private PatientService patientService;
@@ -40,6 +44,7 @@ public class RegistrationController {
             patientService.addPatient(patientDTO);
         } catch (IllegalArgumentException e) {
             model.addAttribute("message", true);
+            logger.info(e.getMessage());
             return "registration";
         }
 

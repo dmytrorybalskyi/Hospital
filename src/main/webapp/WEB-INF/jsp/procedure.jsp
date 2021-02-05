@@ -18,7 +18,6 @@
             </style>
 </head>
 <body>
-
 <div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -28,7 +27,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="/">Main</a>
+        <a class="nav-link" aria-current="page" href="/">Main</a>
+                <a class="nav-link active" aria-current="page" href="/procedure">Procedure</a>
       </div>
       <div class="navbar-nav position-absolute top-0 end-0">
        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -50,38 +50,38 @@
     </div>
   </div>
 </nav>
-
 <div class="container-fluid">
 <div class="row">
 <div class="col-1">
 </div>
-<div class="col-4">
-<h3>Your Procedure</h3>
-      <table class="table">
-               <thead>
-                   <tr>
-                       <td><b>Procedure</b></td>
-                       <td><b>type</b></td>
-                       <td>Status</td>
-                       <td></td>
-                   </tr>
-              </thead>
-     <c:forEach items="${proceduresList}" var="procedures">
-                   <form action="doProcedures" method="POST">
-                      <tr>
+<div class="col-5">
+ <h3>Your procedures</h3>
+       <table class="table table-striped">
+            <thead>
+               <tr>
+                 <td><b>Procedure</b></td>
+                 <td><b>type</b></td>
+                 <td>Status</td>
+                 <td></td>
+               </tr>
+           </thead>
+            <c:forEach items="${proceduresList}" var="procedures">
+                 <form action="doProcedures" method="POST">
+                    <tr>
                       <td>${procedures.procedureName}</td>
                       <td>${procedures.type.name}</td>
                       <td>${procedures.status.name}</td>
                       <input type="hidden" name="procedures_id" value=${procedures.id}>
                       <td><button type="submit" class="btn btn-primary">execute</a></button></td>
-                       </tr>
-                   </form>
-                    </c:forEach>
-          </table>
+                    </tr>
+                 </form>
+    </c:forEach>
+     </table>
+</div>
+<div class="col-6">
+</div>
+</div>
+</div>
+</div>
 </body>
-</div>
-<div class="col-7">
-</div>
-</div>
-</div>
 </html>

@@ -41,6 +41,7 @@ public class AdminController {
         return "addDoctor";
     }
 
+
     @PostMapping("/addDoctor")
     public String addDoctor(@Valid DoctorDTO doctorDTO,
                             BindingResult bindingResultDoctorDTO,
@@ -79,7 +80,8 @@ public class AdminController {
             treatmentService.setDoctor(doctor.getAccount().getId(),id);
         }catch (IllegalArgumentException e){
             model.addAttribute("doctor","doctor already set");
+            return setDoctor(id,model);
         }
-        return "admin";
+        return "redirect:/admin";
     }
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity//Enum
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
