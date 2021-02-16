@@ -41,9 +41,6 @@ public class Doctor {
         this.account = builder.account;
         this.name = builder.name;
         this.category = builder.category;
-        this.patients = builder.patients;
-        this.procedures = builder.procedures;
-        this.treatments = builder.treatments;
         this.patientsNumber = builder.patientsNumber;
     }
 
@@ -52,9 +49,6 @@ public class Doctor {
         private Account account;
         private String name;
         private Category category;
-        private List<Patient> patients = new ArrayList<>();
-        private List<Procedures> procedures = new ArrayList<>();
-        private List<Treatment> treatments = new ArrayList<>();
         private int patientsNumber;
 
         public Builder(String name){
@@ -82,21 +76,6 @@ public class Doctor {
 
         public Builder setCategory(Category category) {
             this.category = category;
-            return  this;
-        }
-
-        public Builder setPatients(List<Patient> patients) {
-            this.patients = patients;
-            return  this;
-        }
-
-        public Builder setProcedures(List<Procedures> procedures) {
-            this.procedures = procedures;
-            return  this;
-        }
-
-        public Builder setTreatments(List<Treatment> treatments) {
-            this.treatments = treatments;
             return  this;
         }
 

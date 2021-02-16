@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,6 @@ public class MainController {
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -35,20 +33,17 @@ public class MainController {
     @Autowired
     private ProceduresService proceduresService;
 
-    //TODO
-    @GetMapping("/")//<- Refactor
+    @GetMapping("/")
     public String greeting(@PageableDefault(size = 3) Pageable pageable,
+                           @AuthenticationPrincipal Account account,
                            Model model) {
-        Account account = accountService.getCurrentAccount();
-        if (account.getRole().getName().equals("admin"))
-            return admin(pageable, model);
-        if (account.getRole().getName().equals("patient"))
-            return patientMain(model);
-        if (account.getRole().getName().equals("doctor"))
-            return doctorMain(model);
-        if (account.getRole().getName().equals("nurse"))
-            return nurseMain(model);
-        return "login";
+        switch (account.getRole().getAuthority()) {
+            case "admin": return admin(pageable, account, model);
+            case "patient": return patientMain(account, model);
+            case "doctor": return doctorMain(account, model);
+            case "nurse": return nurseMain(account, model);
+            default: return "login";
+        }
     }
 
     @GetMapping("/login")
@@ -57,13 +52,14 @@ public class MainController {
     }
 
     @GetMapping("/appointment")
-    public String appointment(Model model) {
-        return patientMain(model);
+    public String appointment(@AuthenticationPrincipal Account account,
+                              Model model) {
+        return patientMain(account, model);
     }
 
     @GetMapping("/patient")
-    public String patientMain(Model model) {
-        Account account = accountService.getCurrentAccount();
+    public String patientMain(@AuthenticationPrincipal Account account,
+                              Model model) {
         List<Category> categoryList = categoryService.findAllWithoutNurse();
         model.addAttribute("proceduresList", proceduresService.findByPatientAndStatus(account));
         model.addAttribute("login", account.getLogin());
@@ -73,8 +69,9 @@ public class MainController {
 
     @GetMapping("/admin")
     public String admin(@PageableDefault(size = 3) Pageable pageable,
+                        @AuthenticationPrincipal Account account,
                         Model model) {
-        Page<Treatment> pages = treatmentService.findByStatus(new Status(1), pageable);
+        Page<Treatment> pages = treatmentService.findByStatus(Status.registration, pageable);
         List<Treatment> treatments = pages.getContent();
         model.addAttribute("pages", pages.getTotalPages());
         model.addAttribute("treatments", treatments);
@@ -82,37 +79,38 @@ public class MainController {
     }
 
     @GetMapping("/procedure")
-    public String procedure(Model model){
-        Account account = accountService.getCurrentAccount();
-        model.addAttribute("proceduresList", proceduresService.findByDoctorAndStatus(account.getDoctor(), new Status(2)));
+    public String procedure(@AuthenticationPrincipal Account account,
+                            Model model) {
+        model.addAttribute("proceduresList", proceduresService.findByDoctorAndStatus(account.getDoctor(), Status.treatment));
         return ("procedure");
     }
 
     @GetMapping("/doctor")
-    public String doctorMain(Model model) {
-        Account account = accountService.getCurrentAccount();
-        model.addAttribute("proceduresList", proceduresService.findByDoctorAndStatus(account.getDoctor(), new Status(2)));
-        model.addAttribute("treatments", treatmentService.findByStatusAndDoctor(new Status(2), account.getDoctor()));
+    public String doctorMain(@AuthenticationPrincipal Account account,
+                             Model model) {
+        model.addAttribute("proceduresList", proceduresService.findByDoctorAndStatus(account.getDoctor(), Status.treatment));
+        model.addAttribute("treatments", treatmentService.findByStatusAndDoctor(Status.treatment, account.getDoctor()));
         model.addAttribute("login", account.getLogin());
         return "doctor";
     }
 
     @GetMapping("/nurse")
-    public String nurseMain(Model model) {
-        Account account = accountService.getCurrentAccount();
-        model.addAttribute("proceduresList", proceduresService.findByDoctorAndStatus(account.getDoctor(), new Status(2)));
+    public String nurseMain(@AuthenticationPrincipal Account account,
+                            Model model) {
+        model.addAttribute("proceduresList", proceduresService.findByDoctorAndStatus(account.getDoctor(), Status.treatment));
         model.addAttribute("login", account.getLogin());
         return "nurse";
     }
 
     @PostMapping("/appointment")
     public String makeAppointment(Model model,
+                                  @AuthenticationPrincipal Account account,
                                   Category category) throws SQLException {
         try {
-            treatmentService.addTreatment(category);
+            treatmentService.addTreatment(account, category);
         } catch (IllegalArgumentException e) {
             model.addAttribute("appointment", true);
-            return patientMain(model);
+            return patientMain(account,model);
         }
         return "redirect:/patient";
     }

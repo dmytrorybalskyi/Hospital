@@ -31,7 +31,7 @@ public class TreatmentService {
     private DoctorRepository doctorRepository;
 
     public List<Treatment> getArchive(){
-        return treatmentRepository.findByStatus(new Status(3));
+        return treatmentRepository.findByStatus(Status.done);
     }
 
     public List<Treatment> findAll() {
@@ -45,14 +45,14 @@ public class TreatmentService {
     public Page<Treatment> findByStatus(Status status, Pageable pageable) {
         return treatmentRepository.findByStatus(status,pageable);
     }
-    @Transactional
+
     public List<Treatment> findByStatusAndDoctor(Status status,Doctor doctor) {
         return treatmentRepository.findByStatusAndDoctor(status,doctor);
     }
 
-    @Transactional
-    public List<Treatment> findByPatientAndStatus(Status status) {
-        return treatmentRepository.findByPatientAndStatus(accountService.getCurrentAccount().getPatient(), status);
+
+    public List<Treatment> findByPatientAndStatus(Status status,Account account) {
+        return treatmentRepository.findByPatientAndStatus(account.getPatient(), status);
     }
 
     @Transactional
@@ -62,27 +62,25 @@ public class TreatmentService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
-    public boolean setDoctor(int doctor_account_id, int treatment_id) {
+    public boolean setDoctor(Doctor doctor, int treatment_id) {
         Treatment treatment = findById(treatment_id).get();
-        Doctor doctor = doctorRepository.findById(doctor_account_id).get();
-        if(treatment.getStatus().getId()==2){
+        if(treatment.getStatus().name().equals("treatment")){
             throw new  IllegalArgumentException("doctor already set");
         }
-        treatmentRepository.setDoctor(doctor_account_id, 2, treatment_id);
-        patientRepository.setDoctor(doctor_account_id, treatment.getPatient().getAccount().getId());
-        doctorRepository.updatePatients(doctor.getPatientsNumber() + 1, doctor_account_id);
+        treatmentRepository.setDoctor(doctor.getId(), Status.treatment.name(), treatment_id);
+        patientRepository.setDoctor(doctor.getId(), treatment.getPatient().getAccount().getId());
+        doctorRepository.updatePatients(doctor.getPatientsNumber() + 1, doctor.getId());
         return true;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
-    public boolean addTreatment(Category category)throws IllegalArgumentException {
-        Account account = accountService.getCurrentAccount();
-        if (!treatmentRepository.findByPatientAndStatus(account.getId(),1,2).isEmpty()){
-            throw new IllegalArgumentException("you're already attempt");
+    public boolean addTreatment(Account account,Category category) throws IllegalArgumentException, SQLException {
+        if(!treatmentRepository.findByPatientAndStatus(account.getId(),Status.registration,Status.treatment).isEmpty()){
+            throw new IllegalArgumentException("you already appointment");
         }
         Treatment treatment = new Treatment(category);
         treatment.setPatient(account.getPatient());
-        treatment.setStatus(new Status(1));
+        treatment.setStatus(Status.registration);
         treatmentRepository.save(treatment);
         return true;
     }
@@ -90,10 +88,9 @@ public class TreatmentService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
     public void discharge(Integer treatment_id){
         Treatment treatment = treatmentRepository.findById(treatment_id).get();
-        treatmentRepository.setStatus(new Status(3).getId(),treatment_id);
+        treatmentRepository.setStatus(Status.done.name(),treatment_id);
         patientRepository.setDoctor(null,treatment.getPatient().getId());
-        Doctor doctor = doctorRepository.findById(treatment.getDoctor().getId()).get();
-        doctorRepository.updatePatients(doctor.getPatientsNumber() -1, doctor.getId());
+        doctorRepository.updatePatients(treatment.getDoctor().getPatientsNumber() -1, treatment.getDoctor().getId());
     }
 
 

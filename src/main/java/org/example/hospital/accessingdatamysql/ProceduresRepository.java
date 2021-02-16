@@ -16,10 +16,11 @@ public interface ProceduresRepository extends JpaRepository<Procedures,Integer> 
     List<Procedures> findByDoctorAndStatus(Doctor doctor, Status status);
 
     @Modifying
-    @Query(value ="UPDATE Procedures p SET p.status_id = ? WHERE p.id = ?",nativeQuery = true)
-    Integer doProcedure(Integer status_id,Integer procedure_id);
+    @Query(value ="UPDATE Procedures p SET p.procedure_status = ? WHERE p.id = ?",nativeQuery = true)
+    Integer doProcedure(String status,Integer procedure_id);
 
-    @Query("SELECT p FROM Procedures p WHERE p.treatment.patient.id = :account_id AND p.status.id = :status_id")
+    @Modifying
+    @Query("SELECT p FROM Procedures p WHERE p.treatment.patient.id = :account_id AND p.status = :status")
     List<Procedures> getAllProceduresByAccountAndStatus(@Param("account_id")Integer account_id,
-                                                     @Param("status_id")Integer status_id);
+                                                        @Param("status") Status status);
 }

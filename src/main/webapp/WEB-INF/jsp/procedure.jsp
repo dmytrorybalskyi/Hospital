@@ -69,8 +69,8 @@
                  <form action="doProcedures" method="POST">
                     <tr>
                       <td>${procedures.procedureName}</td>
-                      <td>${procedures.type.name}</td>
-                      <td>${procedures.status.name}</td>
+                      <td>${procedures.type}</td>
+                      <td>${procedures.status}</td>
                       <input type="hidden" name="procedures_id" value=${procedures.id}>
                       <td><button type="submit" class="btn btn-primary">execute</a></button></td>
                     </tr>

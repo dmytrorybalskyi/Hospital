@@ -21,12 +21,12 @@ public class Procedures {
     @JoinColumn(name = "treatment_id")
     private Treatment treatment;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "procedure_status")
     private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private Type type;
 
     public Procedures(){}

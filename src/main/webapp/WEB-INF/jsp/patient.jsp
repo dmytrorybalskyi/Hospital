@@ -99,8 +99,8 @@
                                 <form action="doProcedures" method="POST">
                                  <tr>
                                  <td>${procedures.procedureName}</td>
-                                 <td>${procedures.type.name}</td>
-                                 <td>${procedures.status.name}</td>
+                                 <td>${procedures.type}</td>
+                                 <td>${procedures.status}</td>
                                  </tr>
                                  </form>
                          </table>

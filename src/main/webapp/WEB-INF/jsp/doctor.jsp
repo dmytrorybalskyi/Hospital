@@ -61,7 +61,7 @@
                        <thead>
                        <tr>
                            <td><b>Patient</b></td>
-                           <td><b>Category</b></td>
+
                            <td><b>Diagnosis</b></td>
                            <td></td>
                            <td></td>
@@ -70,7 +70,7 @@
                        </thead>
              <tr>
                  <td>${treatment.patient.name}</td>
-                 <td>${treatment.category.name}</td>
+
                  <form action="/diagnosis/${treatment.id}" method="POST">
                  <td><input type="text" name="diagnosis" value=${treatment.diagnosis}></td>
                  <td><button type="submit" class="btn btn-primary">edit</button></td>
@@ -88,8 +88,8 @@
                 <c:forEach items="${treatment.proceduresList}" var="procedures">
                  <tr>
                           <td>${procedures.procedureName}</td>
-                          <td>${procedures.type.name}</td>
-                          <td>${procedures.status.name}</td>
+                          <td>${procedures.type}</td>
+                          <td>${procedures.status}</td>
                  </tr>
                 </c:forEach>
              </br>

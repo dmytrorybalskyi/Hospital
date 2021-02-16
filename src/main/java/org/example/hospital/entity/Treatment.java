@@ -24,8 +24,8 @@ public class Treatment {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "treatment_status")
     private Status status;
 
 

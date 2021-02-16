@@ -2,10 +2,7 @@ package org.example.hospital.service;
 
 import org.example.hospital.DTO.DoctorDTO;
 import org.example.hospital.accessingdatamysql.DoctorRepository;
-import org.example.hospital.entity.Account;
-import org.example.hospital.entity.Category;
-import org.example.hospital.entity.Doctor;
-import org.example.hospital.entity.Role;
+import org.example.hospital.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -32,26 +29,25 @@ public class DoctorService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
     public boolean addDoctor(DoctorDTO doctorDTO) {
-        if (accountService.existsByLogin(doctorDTO.getLogin())) {
-            throw new IllegalArgumentException("user already exist");
-        }
-        Account account = new Account(doctorDTO.getLogin(), doctorDTO.getPassword());
-        Doctor doctor = new Doctor.Builder(doctorDTO.getName()).setCategory(doctorDTO.getCategory()).setAccount(account).build();
-        account.setRole(new Role(3));
+        Account account = convertToAccount(doctorDTO);
+        Doctor doctor = convertToDoctor(doctorDTO,account);
+        account.setRole(Roles.doctor);
         if(doctor.getCategory().getName().equals("nurse"))
-            account.setRole(new Role(4));
+           account.setRole(Roles.nurse);
         accountService.addAccount(account);
         doctorRepository.save(doctor);
         return true;
     }
 
 
-    private DoctorDTO convertToDoctorDTO(Doctor doctor) {
-        DoctorDTO doctorDTO = new DoctorDTO();
-        doctorDTO.setLogin(doctor.getAccount().getLogin());
-        doctorDTO.setPassword(doctor.getAccount().getPassword());
-        doctorDTO.setName(doctor.getName());
-        doctorDTO.setCategory(doctor.getCategory());
-        return doctorDTO;
+    private Doctor convertToDoctor(DoctorDTO doctorDTO,Account account) {
+        return new Doctor.Builder(doctorDTO.getName())
+                .setCategory(doctorDTO.getCategory())
+                .setAccount(account).build();
     }
+
+    private Account convertToAccount(DoctorDTO doctorDTO){
+        return new Account(doctorDTO.getLogin(),doctorDTO.getPassword());
+    }
+
 }

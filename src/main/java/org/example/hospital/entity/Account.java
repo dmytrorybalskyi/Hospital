@@ -2,15 +2,16 @@ package org.example.hospital.entity;
 
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import java.util.*;
 
 
 @Entity
-public class Account {
+public class Account implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -23,15 +24,16 @@ public class Account {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Roles role;
 
     @OneToOne (mappedBy = "account", cascade = CascadeType.ALL)
     private Patient patient;
 
     @OneToOne (mappedBy = "account", cascade = CascadeType.ALL)
     private Doctor doctor;
+
 
     public Account(){}
 
@@ -40,8 +42,32 @@ public class Account {
         this.password = password;
     }
 
-    public void setRole(Role role) {
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
         this.role = role;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Integer getId() {
@@ -60,31 +86,38 @@ public class Account {
         this.login = login;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(getRole());
+    }
+
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return login;
     }
 
-    public Role getRole() {
-        return role;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public Patient getPatient() {
-        return patient;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
 }

@@ -8,12 +8,16 @@ import org.example.hospital.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Controller
 public class ProcedureController {
@@ -33,7 +37,7 @@ public class ProcedureController {
     public String addProcedurePage(@PathVariable(value = "id") int id,
                                Model model) {
         Treatment treatment = treatmentService.findById(id).get();
-        model.addAttribute("types", proceduresService.findAllType());
+        model.addAttribute("types", new ArrayList(Arrays.asList(Type.values())));
         model.addAttribute("doctors", doctorService.getAllDoctorsByCategoryAndNurse(treatment.getCategory()));
         model.addAttribute("treatment", treatment);
         return "addProcedure";
@@ -48,11 +52,11 @@ public class ProcedureController {
     @PostMapping("/procedure/{treatment.id}")
     public String addProcedure(@PathVariable(value = "treatment.id") int id,
                                Procedures procedures,
-                               Type type,
+                               @RequestParam String type,
                                Doctor doctor,
                                Model model) {
         try {
-            proceduresService.addProcedure(id, doctor, type, procedures);
+            proceduresService.addProcedure(id, doctor, Type.valueOf(type), procedures);
         } catch (IllegalArgumentException e) {
             model.addAttribute("typeError", "sister error");
             logger.info(e.getMessage());

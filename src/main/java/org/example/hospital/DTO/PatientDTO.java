@@ -7,20 +7,20 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 public class PatientDTO {
-    @NotBlank
-    @Length(max = 20)
+    @NotBlank(message = "label.loginBlank")
+    @Length(max = 20, message = "label.loginTooLong")
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "label.passwordBlank")
     private String password;
 
-    @NotBlank
-    @Length(max = 20)
+    @NotBlank(message = "label.nameBlank")
+    @Length(max = 20,message = "label.nameTooLong")
     private String name;
 
     @NotNull
-    @Min(0)
-    @Max(130)
+    @Min(value = 0,message = "label.ageMin")
+    @Max(value = 130,message = "label.ageMax")
     private Integer age;
 
     public PatientDTO(){}

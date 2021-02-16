@@ -6,17 +6,17 @@ import javax.validation.constraints.NotBlank;
 
 
 public class DoctorDTO {
-    @NotBlank
-    @Length(max = 20)
+    @NotBlank(message = "label.loginBlank")
+    @Length(max = 20, message = "label.loginTooLong")
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "label.passwordBlank")
     private String password;
 
     private Category category;
 
-    @NotBlank
-    @Length(max = 20)
+    @NotBlank(message = "label.nameBlank")
+    @Length(max = 20,message = "label.nameTooLong")
     private String name;
 
     public DoctorDTO(){}

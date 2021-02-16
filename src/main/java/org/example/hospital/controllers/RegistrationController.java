@@ -1,6 +1,8 @@
 package org.example.hospital.controllers;
 
 import org.example.hospital.DTO.PatientDTO;
+import org.example.hospital.entity.Account;
+import org.example.hospital.entity.Roles;
 import org.example.hospital.service.AccountService;
 import org.example.hospital.service.PatientService;
 import org.slf4j.Logger;
@@ -10,9 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.sql.SQLException;
+
 
 @Controller
 public class RegistrationController {
@@ -25,6 +26,7 @@ public class RegistrationController {
     @Autowired
     private AccountService accountService;
 
+
     @GetMapping("/registration")
     public String registration(Model model) {
         return "registration";
@@ -33,7 +35,7 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addAccount(@Valid PatientDTO patientDTO,
                              BindingResult bindingResultPatientDTO,
-                             Model model)throws SQLException {
+                             Model model){
         if (bindingResultPatientDTO.hasErrors()) {
             bindingResultPatientDTO.getFieldErrors().stream().forEach(FieldError -> model
                     .addAttribute(FieldError.getField() + FieldError.getCode(), true));
@@ -42,9 +44,9 @@ public class RegistrationController {
 
         try {
             patientService.addPatient(patientDTO);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             model.addAttribute("message", true);
-            logger.info(e.getMessage());
+            logger.error(e.getMessage());
             return "registration";
         }
 

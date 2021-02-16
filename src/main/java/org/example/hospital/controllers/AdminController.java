@@ -23,9 +23,6 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -51,10 +48,9 @@ public class AdminController {
                     .addAttribute(FieldError.getField() + FieldError.getCode(), true));
             return addDoctor(model);
         }
-
         try{
             doctorService.addDoctor(doctorDTO);
-        }catch (IllegalArgumentException e) {
+        }catch (Exception e) {
             model.addAttribute("message", true);
             return addDoctor(model);
         }
@@ -77,7 +73,7 @@ public class AdminController {
                             Doctor doctor,
                             Model model) {
         try{
-            treatmentService.setDoctor(doctor.getAccount().getId(),id);
+            treatmentService.setDoctor(doctor,id);
         }catch (IllegalArgumentException e){
             model.addAttribute("doctor","doctor already set");
             return setDoctor(id,model);

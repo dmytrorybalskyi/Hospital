@@ -75,7 +75,7 @@
     Name of Procedure: <br/><input type="text" name="procedureName"><br/>
         <select class="selectpicker form-control form-select-button" name="type" required>
             <c:forEach items="${types}" var="type">
-                <option value="${type.id}">${type.name}</option>
+                <option value="${type}">${type}</option>
             </c:forEach>
         </select>
 

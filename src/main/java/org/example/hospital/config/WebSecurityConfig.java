@@ -7,11 +7,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -25,41 +25,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/registration","/login").permitAll()
-                .antMatchers("/admin","/addDoctor","/treatment").hasAuthority("admin")
-                .antMatchers("/patient","/appointment").hasAuthority("patient")
-                .antMatchers("/doctor","/addProcedure").hasAuthority("doctor")
+                .antMatchers("/registration", "/login").permitAll()
+                .antMatchers("/admin", "/addDoctor", "/treatment").hasAuthority("admin")
+                .antMatchers("/patient", "/appointment").hasAuthority("patient")
+                .antMatchers("/doctor", "/addProcedure").hasAuthority("doctor")
                 .antMatchers("/nurse").hasAuthority("nurse")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/unauthorized")
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .failureUrl("/login?error")
-                .usernameParameter("login")
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .failureUrl("/login?error")
+                .usernameParameter("username")
                 .passwordParameter("password")
-                    .permitAll()
+                .permitAll()
                 .and()
-                    .logout()
-                    .permitAll();
+                .logout()
+                .permitAll();
     }
 
-    @Autowired
-    public void registerGlobalAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(accountService)
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(accountService)
                 .passwordEncoder(passwordEncoder);
     }
-
-    public org.springframework.security.core.userdetails.User getCurrentUser() {
-        return (org.springframework.security.core.userdetails.User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-    }
-
 
 }
