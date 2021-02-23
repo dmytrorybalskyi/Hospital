@@ -72,4 +72,24 @@ public class Patient {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public List<Treatment> getTreatments() {
+        return treatments;
+    }
+
+    public void setTreatments(List<Treatment> treatments) {
+        this.treatments = treatments;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }

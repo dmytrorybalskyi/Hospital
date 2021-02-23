@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -109,6 +108,7 @@ public class MainController {
         try {
             treatmentService.addTreatment(account, category);
         } catch (IllegalArgumentException e) {
+            logger.info(account.getLogin()+" --> is already appointment");
             model.addAttribute("appointment", true);
             return patientMain(account,model);
         }
@@ -119,7 +119,7 @@ public class MainController {
     @PostMapping("/discharge/{treatment.id}")
     public String discharge(@PathVariable(value = "treatment.id") int id,
                             Model model) {
-        treatmentService.discharge(id);
+            treatmentService.discharge(id);
         return "redirect:/doctor";
     }
 

@@ -23,13 +23,13 @@
     <div class="col">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand">Hospital</a>
+          <a class="navbar-brand"><spring:message code="label.hospital" /></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link active" aria-current="page" href="/">Main</a>
+              <a class="nav-link active" aria-current="page" href="/"><spring:message code="label.main" /></a>
             </div>
             <div class="navbar-nav position-absolute top-0 end-0">
              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -76,26 +76,27 @@
           <div class="row">
           <div class="col">
             <c:if test="${proceduresList.isEmpty()==false}">
-            <h3>Treatment:</h3>
-                <p><b>Category:</b> ${proceduresList.get(0).treatment.category.name}</p>
-                <p><b>Doctor:</b> ${proceduresList.get(0).treatment.doctor.name}</p>
-                <p><b>Diagnosis:</b> ${proceduresList.get(0).treatment.diagnosis}</p>
+            <h3><spring:message code="label.treatment" />:</h3>
+                <p><b><spring:message code="label.category" />:</b> ${proceduresList.get(0).treatment.category.name}</p>
+                <p><b><spring:message code="label.doctor" />:</b> ${proceduresList.get(0).treatment.doctor.name}</p>
+                <p><b><spring:message code="label.diagnosis" />:</b> ${proceduresList.get(0).treatment.diagnosis}</p>
             </c:if>
           </div>
           </div>
           </div>
     </div>
     <div class="col-6">
-          <c:forEach items="${proceduresList}" var="procedures">
-                <h3>Your procedures:</h3>
-                         <table class="table">
-                              <thead>
-                              <tr>
-                                  <td><b>Name</b></td>
-                                  <td><b>type</b></td>
-                                  <td><b>Status</b></td>
-                              </tr>
-                              </thead>
+                    <h3><spring:message code="label.yourProcedures" />:</h3>
+
+                             <table class="table">
+                                  <thead>
+                                  <tr>
+                                      <td><b><spring:message code="label.name" /></b></td>
+                                      <td><b><spring:message code="label.type" /></b></td>
+                                      <td><b><spring:message code="label.status" /></b></td>
+                                  </tr>
+                                  </thead>
+                                    <c:forEach items="${proceduresList}" var="procedures">
                                 <form action="doProcedures" method="POST">
                                  <tr>
                                  <td>${procedures.procedureName}</td>
@@ -103,8 +104,8 @@
                                  <td>${procedures.status}</td>
                                  </tr>
                                  </form>
-                         </table>
                 </c:forEach>
+                  </table>
     </div>
     <div class="col-3">
     </div>

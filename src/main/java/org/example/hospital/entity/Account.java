@@ -2,6 +2,7 @@ package org.example.hospital.entity;
 
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +20,7 @@ public class Account implements UserDetails{
 
     @NotBlank(message = "Login cannot be empty")
     @Length(max = 20, message = "Login too long")
+    @Column(unique = true)
     private String login;
 
     @NotBlank(message = "Password cannot be empty")

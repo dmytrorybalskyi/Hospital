@@ -19,7 +19,7 @@ public class ExceptionController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message",e.getMessage());
         modelAndView.setViewName("error");
-        logger.error(e.getMessage());
+        logger.error("Error form error Handler --> "+e.getMessage());
         return modelAndView;
     }
 }

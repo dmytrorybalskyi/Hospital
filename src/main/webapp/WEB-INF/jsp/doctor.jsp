@@ -21,14 +21,14 @@
 <div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand">Hospital</a>
+    <a class="navbar-brand"><spring:message code="label.hospital" /></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="/">Main</a>
-         <a class="nav-link " aria-current="page" href="/procedure">Procedure</a>
+        <a class="nav-link active" aria-current="page" href="/"><spring:message code="label.main" /></a>
+         <a class="nav-link " aria-current="page" href="/procedure"><spring:message code="label.procedures" /></a>
       </div>
       <div class="navbar-nav position-absolute top-0 end-0">
        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -55,14 +55,13 @@
 <div class="col-1">
 </div>
 <div class="col-6">
-<h3>Your patients</h3>
+<h3><spring:message code="label.yourPatients" /></h3>
          <c:forEach items="${treatments}" var="treatment">
                    <table class="table">
                        <thead>
                        <tr>
-                           <td><b>Patient</b></td>
-
-                           <td><b>Diagnosis</b></td>
+                           <td><b><spring:message code="label.patient" /></b></td>
+                           <td><b><spring:message code="label.diagnosis" /></b></td>
                            <td></td>
                            <td></td>
                            <td></td>
@@ -73,17 +72,17 @@
 
                  <form action="/diagnosis/${treatment.id}" method="POST">
                  <td><input type="text" name="diagnosis" value=${treatment.diagnosis}></td>
-                 <td><button type="submit" class="btn btn-primary">edit</button></td>
+                 <td><button type="submit" class="btn btn-primary"><spring:message code="label.edit" /></button></td>
                  </form>
-                 <td><a href="/addProcedure/${treatment.id}" class="btn btn-primary">add procedure</a></td>
+                 <td><a href="/addProcedure/${treatment.id}" class="btn btn-primary"><spring:message code="label.addProcedure" /></a></td>
                  <form action="/discharge/${treatment.id}" method="POST">
-                 <td><button type="submit" class="btn btn-primary">discharge</button></td>
+                 <td><button type="submit" class="btn btn-primary"><spring:message code="label.discharge" /></button></td>
                  </form>
              </tr>
              <tr>
-                 <td><b>Procedure name</b></td>
-                 <td><b>Type</b></td>
-                 <td><b>Status</b></td>
+                 <td><b><spring:message code="label.procedureName" /></b></td>
+                 <td><b><spring:message code="label.type" /></b></td>
+                 <td><b><spring:message code="label.status" /></b></td>
              </tr>
                 <c:forEach items="${treatment.proceduresList}" var="procedures">
                  <tr>

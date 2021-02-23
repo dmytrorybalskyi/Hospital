@@ -30,13 +30,4 @@ public class AccountService  implements UserDetailsService{
     }
 
 
-    public Account findByLogin(String login){
-        return accountRepository.findByLogin(login).orElseThrow(()->new UsernameNotFoundException(login+"not found"));
-    }
-
-
-    public boolean existsByLogin(String login){
-        return accountRepository.existsByLogin(login);
-    }
-
 }

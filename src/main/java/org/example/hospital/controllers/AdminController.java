@@ -6,6 +6,8 @@ import org.example.hospital.service.AccountService;
 import org.example.hospital.service.CategoryService;
 import org.example.hospital.service.DoctorService;
 import org.example.hospital.service.TreatmentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Controller
 public class AdminController {
+
+    private Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     private CategoryService categoryService;
@@ -51,6 +55,7 @@ public class AdminController {
         try{
             doctorService.addDoctor(doctorDTO);
         }catch (Exception e) {
+            logger.error(doctorDTO.getLogin()+": " + e.getMessage());
             model.addAttribute("message", true);
             return addDoctor(model);
         }
@@ -75,6 +80,7 @@ public class AdminController {
         try{
             treatmentService.setDoctor(doctor,id);
         }catch (IllegalArgumentException e){
+            logger.error("Treatment #"+id+" --> doctor was already set");
             model.addAttribute("doctor","doctor already set");
             return setDoctor(id,model);
         }

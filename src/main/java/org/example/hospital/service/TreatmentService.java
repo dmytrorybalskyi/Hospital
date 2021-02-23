@@ -34,10 +34,6 @@ public class TreatmentService {
         return treatmentRepository.findByStatus(Status.done);
     }
 
-    public List<Treatment> findAll() {
-        return (List<Treatment>) treatmentRepository.findAll();
-    }
-
     public Optional<Treatment> findById(int id) {
         return treatmentRepository.findById(id);
     }
@@ -48,11 +44,6 @@ public class TreatmentService {
 
     public List<Treatment> findByStatusAndDoctor(Status status,Doctor doctor) {
         return treatmentRepository.findByStatusAndDoctor(status,doctor);
-    }
-
-
-    public List<Treatment> findByPatientAndStatus(Status status,Account account) {
-        return treatmentRepository.findByPatientAndStatus(account.getPatient(), status);
     }
 
     @Transactional
@@ -86,11 +77,12 @@ public class TreatmentService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
-    public void discharge(Integer treatment_id){
+    public boolean discharge(Integer treatment_id){
         Treatment treatment = treatmentRepository.findById(treatment_id).get();
         treatmentRepository.setStatus(Status.done.name(),treatment_id);
         patientRepository.setDoctor(null,treatment.getPatient().getId());
         doctorRepository.updatePatients(treatment.getDoctor().getPatientsNumber() -1, treatment.getDoctor().getId());
+        return true;
     }
 
 

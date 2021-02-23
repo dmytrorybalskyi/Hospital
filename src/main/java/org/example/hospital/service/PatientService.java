@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @Service
 public class PatientService {
@@ -21,9 +20,6 @@ public class PatientService {
     @Autowired
     AccountService accountService;
 
-    public List<Patient> findAll(){
-        return patientRepository.findAll();
-    }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {SQLException.class,IllegalArgumentException.class})
     public boolean addPatient(PatientDTO patientDTO){

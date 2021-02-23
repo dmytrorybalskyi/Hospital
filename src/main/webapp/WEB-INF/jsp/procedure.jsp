@@ -21,14 +21,14 @@
 <div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand">Hospital</a>
+    <a class="navbar-brand"><spring:message code="label.hospital" /></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" aria-current="page" href="/">Main</a>
-                <a class="nav-link active" aria-current="page" href="/procedure">Procedure</a>
+        <a class="nav-link" aria-current="page" href="/"><spring:message code="label.main" /></a>
+                <a class="nav-link active" aria-current="page" href="/procedure"><spring:message code="label.procedures" /></a>
       </div>
       <div class="navbar-nav position-absolute top-0 end-0">
        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -55,24 +55,26 @@
 <div class="col-1">
 </div>
 <div class="col-5">
- <h3>Your procedures</h3>
+ <h3><spring:message code="label.yourProcedures" /></h3>
        <table class="table table-striped">
             <thead>
                <tr>
-                 <td><b>Procedure</b></td>
-                 <td><b>type</b></td>
-                 <td>Status</td>
+                 <td><b><spring:message code="label.name" /></b></td>
+                 <td><b><spring:message code="label.procedure" /></b></td>
+                 <td><b><spring:message code="label.type" /></b></td>
+                 <td><b><spring:message code="label.status" /></b></td>
                  <td></td>
                </tr>
            </thead>
             <c:forEach items="${proceduresList}" var="procedures">
                  <form action="doProcedures" method="POST">
                     <tr>
+                     <td>${procedures.treatment.patient.name}</td>
                       <td>${procedures.procedureName}</td>
                       <td>${procedures.type}</td>
                       <td>${procedures.status}</td>
                       <input type="hidden" name="procedures_id" value=${procedures.id}>
-                      <td><button type="submit" class="btn btn-primary">execute</a></button></td>
+                      <td><button type="submit" class="btn btn-primary"><spring:message code="label.execute" /></a></button></td>
                     </tr>
                  </form>
     </c:forEach>
