@@ -58,7 +58,7 @@ public class ProcedureController {
         try {
             proceduresService.addProcedure(id, doctor, Type.valueOf(type), procedures);
         } catch (IllegalArgumentException e) {
-            model.addAttribute("typeError", "sister error");
+            model.addAttribute("typeError", true);
             logger.info("Treatment #"+id+" "+procedures.getProcedureName()+" was rejected --> sister cannot do operation");
            return addProcedurePage(id,model);
         }

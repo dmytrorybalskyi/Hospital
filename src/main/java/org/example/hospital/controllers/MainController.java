@@ -60,7 +60,7 @@ public class MainController {
     public String patientMain(@AuthenticationPrincipal Account account,
                               Model model) {
         List<Category> categoryList = categoryService.findAllWithoutNurse();
-        model.addAttribute("proceduresList", proceduresService.findByPatientAndStatus(account));
+        model.addAttribute("treatment",treatmentService.findByPatientAndStatus(Status.treatment,account.getPatient()));
         model.addAttribute("login", account.getLogin());
         model.addAttribute("categories", categoryList);
         return "patient";

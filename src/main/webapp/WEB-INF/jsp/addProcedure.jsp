@@ -85,7 +85,9 @@
             </c:forEach>
         </select>
     <button type="submit"><spring:message code="label.add"/></button>
-    <p>${typeError}</p>
+                <c:if test="${typeError==true}">
+                            <p><spring:message code="label.typeError" /></p>
+                      </c:if>
 </form>
 </div>
 <div class="col-5">

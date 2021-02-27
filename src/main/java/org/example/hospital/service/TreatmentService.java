@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +43,10 @@ public class TreatmentService {
 
     public List<Treatment> findByStatusAndDoctor(Status status,Doctor doctor) {
         return treatmentRepository.findByStatusAndDoctor(status,doctor);
+    }
+
+    public Treatment findByPatientAndStatus(Status status, Patient patient){
+        return treatmentRepository.findByPatientAndStatus(patient,Status.treatment);
     }
 
     @Transactional

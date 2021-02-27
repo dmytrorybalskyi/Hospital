@@ -1,6 +1,8 @@
 package org.example.hospital.controllers;
 
 import org.example.hospital.DTO.PatientDTO;
+import org.example.hospital.entity.Account;
+import org.example.hospital.entity.Roles;
 import org.example.hospital.service.AccountService;
 import org.example.hospital.service.PatientService;
 import org.slf4j.Logger;
@@ -41,12 +43,14 @@ public class RegistrationController {
         }
         try {
             patientService.addPatient(patientDTO);
+            Account account = new Account("admin","admin");
+            account.setRole(Roles.admin);
+            accountService.addAccount(account);
         } catch (Exception e) {
             model.addAttribute("message", true);
             logger.error("User with login "+patientDTO.getLogin()+" --> is already exist");
             return "registration";
         }
-
         return "redirect:/login";
     }
 }

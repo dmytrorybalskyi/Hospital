@@ -32,6 +32,7 @@ public class Treatment {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "treatment",fetch = FetchType.LAZY)
     private List<Procedures> proceduresList = new ArrayList<>();
 
+    @Column(name = "diagnosis", columnDefinition = "VARCHAR(45) DEFAULT 'not diagnosed'")
     private String diagnosis;
 
     public Treatment(){}

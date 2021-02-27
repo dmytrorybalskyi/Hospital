@@ -81,7 +81,7 @@ public class AdminController {
             treatmentService.setDoctor(doctor,id);
         }catch (IllegalArgumentException e){
             logger.error("Treatment #"+id+" --> doctor was already set");
-            model.addAttribute("doctor","doctor already set");
+            model.addAttribute("doctor",true);
             return setDoctor(id,model);
         }
         return "redirect:/admin";

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface TreatmentRepository extends JpaRepository<Treatment,Integer> {
-    List<Treatment> findByPatientAndStatus(Patient patient, Status status);
+    Treatment findByPatientAndStatus(Patient patient, Status status);
 
     Page<Treatment> findByStatus(Status status, Pageable pageable);
 

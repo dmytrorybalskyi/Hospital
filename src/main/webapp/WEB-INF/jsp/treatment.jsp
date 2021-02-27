@@ -81,8 +81,11 @@
                                  </c:forEach>
                        </select>
                  <button type="submit" class="btn btn-outline-dark"><spring:message code="label.set" /></a></button>
+                        <c:if test="${doctor==true}">
+                                          <p><spring:message code="label.doctorError" /></p>
+                                   </c:if>
          </form>
-          <p>${doctor}</p>
+
      </table>
 </form>
 </div>

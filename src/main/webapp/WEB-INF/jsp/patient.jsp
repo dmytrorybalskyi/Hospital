@@ -75,19 +75,17 @@
           </div>
           <div class="row">
           <div class="col">
-            <c:if test="${proceduresList.isEmpty()==false}">
             <h3><spring:message code="label.treatment" />:</h3>
-                <p><b><spring:message code="label.category" />:</b> ${proceduresList.get(0).treatment.category.name}</p>
-                <p><b><spring:message code="label.doctor" />:</b> ${proceduresList.get(0).treatment.doctor.name}</p>
-                <p><b><spring:message code="label.diagnosis" />:</b> ${proceduresList.get(0).treatment.diagnosis}</p>
-            </c:if>
+                <p><b><spring:message code="label.category" />:</b> ${treatment.category.name}</p>
+                <p><b><spring:message code="label.doctor" />:</b> ${treatment.doctor.name}</p>
+                <p><b><spring:message code="label.diagnosis" />:</b> ${treatment.diagnosis}</p>
           </div>
           </div>
           </div>
     </div>
     <div class="col-6">
                     <h3><spring:message code="label.yourProcedures" />:</h3>
-
+  <c:if test="${treatment.proceduresList.isEmpty()==false}">
                              <table class="table">
                                   <thead>
                                   <tr>
@@ -96,16 +94,17 @@
                                       <td><b><spring:message code="label.status" /></b></td>
                                   </tr>
                                   </thead>
-                                    <c:forEach items="${proceduresList}" var="procedures">
-                                <form action="doProcedures" method="POST">
+                                    <c:forEach items="${treatment.proceduresList}" var="procedures">
+
                                  <tr>
                                  <td>${procedures.procedureName}</td>
                                  <td>${procedures.type}</td>
                                  <td>${procedures.status}</td>
                                  </tr>
-                                 </form>
+
                 </c:forEach>
                   </table>
+                         </c:if>
     </div>
     <div class="col-3">
     </div>
